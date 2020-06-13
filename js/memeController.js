@@ -2,25 +2,24 @@
 
 var gElCanvas;
 var gCtx;
-// var gLineIdx;
 
 function onInit() {
     renderImages();
 }
 
+function onToggleMenu() {
+    document.body.classList.toggle('menu-open');
+}
+
 function renderImages() {
     var imgs = getImages();
     var strHTMLs = imgs.map(img => {
-        return `
-                        <img id="image-${img.id}" onclick="onSelectImage(${img.id})" src="${img.url}" alt="${img.keywords}">
-                        `
+        return `<img id="image-${img.id}" onclick="onSelectImage(${img.id})" src="${img.url}" alt="${img.keywords}">`
     })
     document.querySelector('.gallery-container').innerHTML = strHTMLs.join('');
 }
 
 function onSelectImage(imageId) {
-    document.querySelector('#canvas').hidden = false;
-
     renderMeme(imageId);
     renderControlBox();
 }
@@ -28,10 +27,17 @@ function onSelectImage(imageId) {
 function renderControlBox() {
     if (getMemeImageId()) {
         renderControlBoxLines();
-        document.querySelector('.control-box').hidden = false;
-        // renderControlBoxFontSize();
-        // renderControlBoxMovingLine()
+        document.querySelector('.gallery-container').classList.remove('grid');
+        document.querySelector('.gallery-container').hidden = true;
+        document.querySelector('.meme').hidden = false;
     }
+}
+
+function showGallery(event) {
+    event.preventDeafult;
+    document.querySelector('.gallery-container').classList.add('grid');
+    document.querySelector('.gallery-container').hidden = false;
+    document.querySelector('.meme').hidden = true;
 }
 
 function renderControlBoxLines() {
@@ -41,7 +47,7 @@ function renderControlBoxLines() {
 
     if (lines.length) {
         linesHTML = lines.map((line, index) => {
-            return `<input type="text" value="${line.txt}" onkeyup="onChangeLineText(this.value, ${index})" 
+            return `<input id="${index}" type="text" value="${line.txt}" onkeyup="onChangeLineText(this.value, ${index})" 
             onclick="onSelectedLineIdx(${index})" autofocus />`;
         });
     }
@@ -49,18 +55,6 @@ function renderControlBoxLines() {
     linesHTML.push(`<input type="submit" value="Add Line" onclick="onAddNewLine()"/>`)
     elLines.innerHTML = linesHTML.join('');
 }
-
-// function renderControlBoxFontSize() {
-//     var strHTML = '<button onclick="onIncreaseFontSize()">A+</button><button onclick="onDecreaseFontSize()">A-</button>';
-//     var elFontSize = document.querySelector('.font-size');
-//     elFontSize.innerHTML = strHTML;
-// }
-
-// function renderControlBoxMovingLine() {
-//     var strHTML = '<button onclick="onMovingLineUp()">Move Up</button><button onclick="onMovingLineDown()">Move Down</button>';
-//     var elMoveLine = document.querySelector('.move-line');
-//     elMoveLine.innerHTML = strHTML;
-// }
 
 function renderMeme(imgId) {
     setMemeImageId(imgId);
@@ -90,6 +84,9 @@ function onChangeLineText(newText, lineIdx) {
 }
 
 function onAddNewLine() {
+    // delete the render control box line from js, but before - think how do you get details about the line
+    // get autofocus on input line
+    // clear input line
     addMemeLine('');
     renderControlBox();
 }
@@ -130,6 +127,81 @@ function onMovingLineDown() {
     }
 }
 
-// function onSwitchLine() {
+function onSwitchLine() {
+    var lineIdx = getMemeLineIdx();
+    var lines = getMemeLines();
+    if (lines) {
+        if (lineIdx >= lines.length - 1) {
+            lineIdx = 0;
+            setMemeLineIdx(lineIdx)
+            document.getElementById(`${lineIdx}`).focus();
+        }
+        else if (lineIdx < lines.length - 1) {
+            ++lineIdx
+            setMemeLineIdx(lineIdx)
+            document.getElementById(`${lineIdx}`).focus();
+        }
+    }
+}
 
-// }
+function onChangeStroke() {
+    var gElStrokeColor = document.getElementById('stroke-color');
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('stroke', gElStrokeColor.value);
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onChangeFontColor() {
+    var gElFontColor = document.getElementById('font-color');
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('color', gElFontColor.value);
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onDownloadMeme(elLink) {
+    const data = gElCanvas.toDataURL();
+    elLink.href = data;
+    elLink.download = 'my_meme';
+}
+
+function setFont(elFont) {
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('font', elFont);
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onTextAlignLeft() {
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('align', 'left');
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onTextAlignCenter() {
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('align', 'center');
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onTextAlignRight() {
+    var lines = getMemeLines();
+    if (lines) {
+        updateMemeLine('align', 'right');
+        renderMeme(getMemeImageId());
+    }
+}
+
+function onDeleteLine() {
+    var lineIdx = getMemeLineIdx();
+    deleteLine(lineIdx);
+    renderMeme(getMemeImageId());
+}

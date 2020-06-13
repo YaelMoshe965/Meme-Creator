@@ -4,34 +4,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib/fontawesome-free-5.13.0-web/css/all.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Ultimate Meme Creator</title>
 </head>
 
 <body onload="onInit()">
 
-    <canvas id="canvas" height="400" width="400" style="border: 1px solid black;" hidden></canvas>
+    <div class="screen" onclick="onToggleMenu()"></div>
 
-    <div class="control-box" hidden>
+    <header>
+        <section class="header-section container flex space-between">
 
-        <div class="lines"></div>
+            <a class="logo" href="index.html"><img src="img/layer-2.png" alt=""></a>
 
-        <div class="font-size">
-            <button onclick="onIncreaseFontSize()">A+</button>
-            <button onclick="onDecreaseFontSize()">A-</button>
+            <div class="menu-button" onclick="onToggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+              </div>
+
+            <nav class="navbar flex">
+                <div class="close-menu-button" onclick="onToggleMenu()">
+                    <i class="fas fa-times fa-lg"></i>
+                </div>
+                <a class="nav-link" href="#" onclick="showGallery(event)">Gallery</a>
+                <span class="nav-link">|</span>
+                <a class="nav-link" href="/about">About</a>
+            </nav>
+
+        </section>
+    </header>
+
+    <main>
+        <section class="gallery-container container grid"></section>
+
+        <div class="meme" hidden>
+            <section class="meme-editor container flex">
+                <canvas id="canvas" height="540" width="540" style="border: 1px solid black;"></canvas>
+
+                <div class="control-box grid">
+                    <div class="text-line">
+                        <input type="text">
+                    </div>
+
+                    <div class="button-box move-line-up">
+                        <button onclick="onMovingLineUp()">
+                            <i class="fas fa-long-arrow-alt-up fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="button-box move-line-down">
+                        <button onclick="onMovingLineDown()">
+                            <i class="fas fa-long-arrow-alt-down fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="button-box switch-line">
+                        <button onclick="onSwitchLine()">
+                            <i class="fas fa-exchange-alt fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <!-- <div class="button-box">
+                        <button onclick="onAddNewLine()">
+                            <i class="fas fa-plus fa-3x"></i>
+                        </button>
+                    </div> -->
+
+                    <div class="lines"></div>
+
+                    <div class="button-box delete-line">
+                        <button onclick="onDeleteLine()">
+                            <i class="far fa-trash-alt fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="button-box font-size-up">
+                        <button onclick="onIncreaseFontSize()"><img src="http://www.placehold.it/27" alt="A+"></button>
+                    </div>
+
+                    <div class="button-box font-size-down">
+                        <button onclick="onDecreaseFontSize()"><img src="http://www.placehold.it/27" alt="A-"></button>
+                    </div>
+
+                    <div class="button-box position-line-left">
+                        <button class="left" onclick="onTextAlignLeft()">
+                            <i class="fas fa-align-left fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="button-box position-line-center">
+                        <button class="center" onclick="onTextAlignCenter()">
+                            <i class="fas fa-align-center fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="button-box position-line-right">
+                        <button class="right" onclick="onTextAlignRight()">
+                            <i class="fas fa-align-right fa-3x"></i>
+                        </button>
+                    </div>
+
+                    <div class="select-box font-family-select">
+                        <select onchange="setFont(this.value)">
+                            <option value="Impact">IMPACT</option>
+                            <option value="monospace">MONOSPACE</option>
+                            <option value="Verdana">Verdana</option>
+                        </select>
+                    </div>
+
+                    <div class="button-box change-color-stroke" onchange="onChangeStroke()">
+                        <input type="color" id="stroke-color" value="#000000" class="stroke-font">
+                    </div>
+
+                    <div class="button-box change-color-font" onchange="onChangeFontColor()">
+                        <input type="color" id="font-color" value="#ffffff" class="font-color">
+                    </div>
+
+                    <a href="#" class="link-box download" onclick="onDownloadMeme(this)">Download</a>
+
+                    <a href="#" class="link-box share">Share</a>
+                </div>
+            </section>
+
         </div>
+    </main>
 
-        <div class="move-line">
-            <button onclick="onMovingLineUp()">Move Up</button>
-            <button onclick="onMovingLineDown()">Move Down</button>
-        </div>
+    <footer>
+        <section class="footer-section container">
 
-        <div class="switch-line">
-            <button onchange="onSwitchLine()">Switch Line</button>
-        </div>
-    </div>
+            <img src="img/layer-2.png" alt="">
+            <div class="rights">All rights reserved 2019</div>
 
-    <section class="gallery-container"></section>
+        </section>
+    </footer>
 
     <script src="js/util.js"></script>
     <script src="js/memeService.js"></script>
