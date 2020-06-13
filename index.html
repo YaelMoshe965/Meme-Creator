@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="lib/fontawesome-free-5.13.0-web/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Ultimate Meme Creator</title>
 </head>
@@ -22,7 +22,7 @@
                 <div class="bar1"></div>
                 <div class="bar2"></div>
                 <div class="bar3"></div>
-              </div>
+            </div>
 
             <nav class="navbar flex">
                 <div class="close-menu-button" onclick="onToggleMenu()">
@@ -45,7 +45,7 @@
 
                 <div class="control-box grid">
                     <div class="text-line">
-                        <input type="text">
+                        <input type="text" onkeyup="onChangeLineText(this.value)" disabled>
                     </div>
 
                     <div class="button-box move-line-up">
@@ -66,13 +66,15 @@
                         </button>
                     </div>
 
-                    <!-- <div class="button-box">
+                    <div class="button-box">
                         <button onclick="onAddNewLine()">
                             <i class="fas fa-plus fa-3x"></i>
                         </button>
-                    </div> -->
+                    </div>
 
-                    <div class="lines"></div>
+                    <!-- <div class="lines">
+
+                    </div> -->
 
                     <div class="button-box delete-line">
                         <button onclick="onDeleteLine()">

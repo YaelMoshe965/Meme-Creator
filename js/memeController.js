@@ -26,7 +26,6 @@ function onSelectImage(imageId) {
 
 function renderControlBox() {
     if (getMemeImageId()) {
-        renderControlBoxLines();
         document.querySelector('.gallery-container').classList.remove('grid');
         document.querySelector('.gallery-container').hidden = true;
         document.querySelector('.meme').hidden = false;
@@ -38,22 +37,6 @@ function showGallery(event) {
     document.querySelector('.gallery-container').classList.add('grid');
     document.querySelector('.gallery-container').hidden = false;
     document.querySelector('.meme').hidden = true;
-}
-
-function renderControlBoxLines() {
-    var lines = getMemeLines();
-    var linesHTML = [];
-    var elLines = document.querySelector('.lines');
-
-    if (lines.length) {
-        linesHTML = lines.map((line, index) => {
-            return `<input id="${index}" type="text" value="${line.txt}" onkeyup="onChangeLineText(this.value, ${index})" 
-            onclick="onSelectedLineIdx(${index})" autofocus />`;
-        });
-    }
-
-    linesHTML.push(`<input type="submit" value="Add Line" onclick="onAddNewLine()"/>`)
-    elLines.innerHTML = linesHTML.join('');
 }
 
 function renderMeme(imgId) {
@@ -77,7 +60,7 @@ function onSelectedLineIdx(lineIdx) {
     setMemeLineIdx(lineIdx);
 }
 
-function onChangeLineText(newText, lineIdx) {
+function onChangeLineText(newText, lineIdx = getMemeLineIdx()) {
     if (!getMemeLineIdx()) setMemeLineIdx(lineIdx);
     updateMemeLine('txt', newText);
     renderMeme(getMemeImageId());
@@ -87,8 +70,18 @@ function onAddNewLine() {
     // delete the render control box line from js, but before - think how do you get details about the line
     // get autofocus on input line
     // clear input line
-    addMemeLine('');
-    renderControlBox();
+    const newLinesLength = addMemeLine('');
+    setMemeLineIdx(newLinesLength - 1);
+    focusOnTextLine()
+    renderMeme(getMemeImageId());
+}
+
+function focusOnTextLine() {
+    const elTextLine = document.querySelector('.text-line input');
+    elTextLine.placeholder = "Enter text here...";
+    elTextLine.value = '';
+    elTextLine.disabled = false;
+    elTextLine.focus();
 }
 
 function onIncreaseFontSize() {
@@ -133,13 +126,13 @@ function onSwitchLine() {
     if (lines) {
         if (lineIdx >= lines.length - 1) {
             lineIdx = 0;
-            setMemeLineIdx(lineIdx)
-            document.getElementById(`${lineIdx}`).focus();
+            setMemeLineIdx(lineIdx);
+            focusOnTextLine();
         }
         else if (lineIdx < lines.length - 1) {
-            ++lineIdx
-            setMemeLineIdx(lineIdx)
-            document.getElementById(`${lineIdx}`).focus();
+            ++lineIdx;
+            setMemeLineIdx(lineIdx);
+            focusOnTextLine();
         }
     }
 }

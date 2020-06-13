@@ -44,7 +44,7 @@ function getMemeLineIdx() {
     return gMeme.selectedLineIdx;
 }
 
-function setMemeLineIdx(lineIdx) {        
+function setMemeLineIdx(lineIdx) {
     return gMeme.selectedLineIdx = lineIdx;
 }
 
@@ -78,9 +78,9 @@ function addMemeLine(text) {
 
     if (gMeme.lines.length === 0) line.positionY = 50;
     if (gMeme.lines.length === 1) line.positionY = 530;
-    if (gMeme.lines.length > 1) line.positionY = 270; 
+    if (gMeme.lines.length > 1) line.positionY = 270;
 
-    gMeme.lines.push(line);
+    return gMeme.lines.push(line);
 }
 
 
