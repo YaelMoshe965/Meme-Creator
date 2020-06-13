@@ -9,7 +9,7 @@
     <title>Ultimate Meme Creator</title>
 </head>
 
-<body onload="onInit()">
+<body onload="onInit()" onresize="onResize()">
 
     <div class="screen" onclick="onToggleMenu()"></div>
 
@@ -72,10 +72,6 @@
                         </button>
                     </div>
 
-                    <!-- <div class="lines">
-
-                    </div> -->
-
                     <div class="button-box delete-line">
                         <button onclick="onDeleteLine()">
                             <i class="far fa-trash-alt fa-3x"></i>
@@ -83,11 +79,15 @@
                     </div>
 
                     <div class="button-box font-size-up">
-                        <button onclick="onIncreaseFontSize()"><img src="http://www.placehold.it/27" alt="A+"></button>
+                        <button onclick="onIncreaseFontSize()">
+                            <i class="fas fa-search-plus fa-3x"></i>
+                        </button>
                     </div>
 
                     <div class="button-box font-size-down">
-                        <button onclick="onDecreaseFontSize()"><img src="http://www.placehold.it/27" alt="A-"></button>
+                        <button onclick="onDecreaseFontSize()">
+                            <i class="fas fa-search-minus fa-3x"></i>
+                        </button>
                     </div>
 
                     <div class="button-box position-line-left">

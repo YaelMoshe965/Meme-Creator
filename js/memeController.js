@@ -7,6 +7,17 @@ function onInit() {
     renderImages();
 }
 
+function onResize() {
+    if (gElCanvas) renderMeme(getMemeImageId())
+}
+
+function setCanvasSize() {
+    const canvasWidth = window.innerWidth > 540 ? 540 : window.innerWidth;
+
+    gElCanvas.width = canvasWidth;
+    gElCanvas.height = canvasWidth;
+}
+
 function onToggleMenu() {
     document.body.classList.toggle('menu-open');
 }
@@ -45,13 +56,15 @@ function renderMeme(imgId) {
     gElCanvas = document.querySelector('#canvas');
     gCtx = gElCanvas.getContext('2d');
 
+    setCanvasSize()
+
     var elImg = document.querySelector(`#image-${imgId}`);
     gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
 
     var lines = getMemeLines();
     if (lines.length) {
         lines.forEach(line => {
-            drawTextFromLine(line)
+            drawTextFromLine(line, window.innerWidth)
         });
     }
 }
@@ -67,9 +80,6 @@ function onChangeLineText(newText, lineIdx = getMemeLineIdx()) {
 }
 
 function onAddNewLine() {
-    // delete the render control box line from js, but before - think how do you get details about the line
-    // get autofocus on input line
-    // clear input line
     const newLinesLength = addMemeLine('');
     setMemeLineIdx(newLinesLength - 1);
     focusOnTextLine()
@@ -84,40 +94,37 @@ function focusOnTextLine() {
     elTextLine.focus();
 }
 
-function onIncreaseFontSize() {
+function modifyLineProperty(propertyName, action, value = 1) {
     var lineIdx = getMemeLineIdx();
     var lines = getMemeLines();
     if (lines) {
-        updateMemeLine('size', lines[lineIdx].size + 3);
+        if (action === 'increment') {
+            updateMemeLine(propertyName, lines[lineIdx][propertyName] + value);
+        } else if (action === 'decrement') {
+            updateMemeLine(propertyName, lines[lineIdx][propertyName] - value);
+        } else if (action === 'setValue') {
+            updateMemeLine(propertyName, value);
+        }
         renderMeme(getMemeImageId());
     }
+}
+
+function onIncreaseFontSize() {
+    modifyLineProperty('size', 'increment', 3);
 }
 
 function onDecreaseFontSize() {
-    var lineIdx = getMemeLineIdx();
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('size', lines[lineIdx].size - 3);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('size', 'decrement', 3);
+
 }
 
 function onMovingLineUp() {
-    var lineIdx = getMemeLineIdx();
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('positionY', lines[lineIdx].positionY - 10);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('positionY', 'decrement', 10);
+
 }
 
 function onMovingLineDown() {
-    var lineIdx = getMemeLineIdx();
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('positionY', lines[lineIdx].positionY + 10);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('positionY', 'increment', 10);
 }
 
 function onSwitchLine() {
@@ -139,20 +146,12 @@ function onSwitchLine() {
 
 function onChangeStroke() {
     var gElStrokeColor = document.getElementById('stroke-color');
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('stroke', gElStrokeColor.value);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('stroke', 'setValue', gElStrokeColor.value);
 }
 
 function onChangeFontColor() {
     var gElFontColor = document.getElementById('font-color');
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('color', gElFontColor.value);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('color', 'setValue', gElFontColor.value);
 }
 
 function onDownloadMeme(elLink) {
@@ -162,35 +161,19 @@ function onDownloadMeme(elLink) {
 }
 
 function setFont(elFont) {
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('font', elFont);
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('font', 'setValue', elFont);
 }
 
 function onTextAlignLeft() {
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('align', 'left');
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('align', 'setValue', 'right');
 }
 
 function onTextAlignCenter() {
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('align', 'center');
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('align', 'setValue', 'center');
 }
 
 function onTextAlignRight() {
-    var lines = getMemeLines();
-    if (lines) {
-        updateMemeLine('align', 'right');
-        renderMeme(getMemeImageId());
-    }
+    modifyLineProperty('align', 'setValue', 'left');
 }
 
 function onDeleteLine() {
