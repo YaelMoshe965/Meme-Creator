@@ -76,28 +76,33 @@ span.nav-link {
 
 /* MAIN */
 
-/* gallery */
+/* gallery and saved memes */
 
 main {
     background-color: #e3e3e3;
 }
 
-.gallery-container {
+.gallery-container, .saved-memes-container {
     padding-top: 30px;
     padding-bottom: 30px;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
-.gallery-container img {
+.gallery-container img, .saved-memes-container img {
     width: 100%;
     height: auto;
     object-fit: cover;
     cursor: pointer;
 }
 
-.gallery-container img:hover {
+.gallery-container img:hover, .saved-memes-container img:hover {
     border: 3px solid #e3e3e3;
+}
+
+p {
+    font-family: mon-regular, sans-serif;
+    font-size: 1.2rem;
 }
 
 /* meme-editor */
@@ -142,7 +147,7 @@ main {
     width: 100%;
 }
 
-.link-box {
+.link-box, .save {
     background-color: #ff7f00;
     border: 0;
     border-radius: 12px;
@@ -153,6 +158,11 @@ main {
     text-decoration: none;
     text-align: center;
     font-family: mon-medium;
+    font-size: 1.3rem;
+}
+
+.save {
+    cursor: pointer; 
 }
 
 .text-line input {
@@ -172,10 +182,10 @@ main {
 }
 
 .download {
-    grid-column: 1 / 3;
+    grid-column: 1 /3;
 }
 
-.share {
+.save {
     grid-column: -3 / -1;
 }
 
@@ -330,7 +340,7 @@ footer {
         width: 100%;
         height: 40px;
     }
-    .link-box {
+    .link-box, .save {
         line-height: 40px;
         height: 40px;
         width: 100%;

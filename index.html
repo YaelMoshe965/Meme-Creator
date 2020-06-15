@@ -28,9 +28,9 @@
                 <div class="close-menu-button" onclick="onToggleMenu()">
                     <i class="fas fa-times fa-lg"></i>
                 </div>
-                <a class="nav-link" href="#" onclick="showGallery(event)">Gallery</a>
+                <a class="nav-link" href="#" onclick="onShowGallery(event)">Gallery</a>
                 <span class="nav-link">|</span>
-                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="#" onclick="onShowSavedMemes(event)">Memes</a>
             </nav>
 
         </section>
@@ -38,6 +38,7 @@
 
     <main>
         <section class="gallery-container container grid"></section>
+        <section class="saved-memes-container container grid"></section>
 
         <div class="meme" hidden>
             <section class="meme-editor container flex">
@@ -45,7 +46,7 @@
 
                 <div class="control-box grid">
                     <div class="text-line">
-                        <input type="text" onkeyup="onChangeLineText(this.value)" disabled>
+                        <input type="text" onkeyup="onChangeLineText(this.value)">
                     </div>
 
                     <div class="button-box move-line-up">
@@ -126,10 +127,9 @@
 
                     <a href="#" class="link-box download" onclick="onDownloadMeme(this)">Download</a>
 
-                    <a href="#" class="link-box share">Share</a>
-                </div>
-            </section>
+                    <button class="save" onclick="onSaveMeme()">Save</button>
 
+            </section>
         </div>
     </main>
 
@@ -137,12 +137,13 @@
         <section class="footer-section container">
 
             <img src="img/layer-2.png" alt="">
-            <div class="rights">All rights reserved 2019</div>
+            <div class="rights">All rights reserved</div>
 
         </section>
     </footer>
 
     <script src="js/util.js"></script>
+    <script src="js/storageService.js"></script>
     <script src="js/memeService.js"></script>
     <script src="js/memeController.js"></script>
 </body>
